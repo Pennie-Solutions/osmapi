@@ -31,7 +31,7 @@ public class GpsTracesParserTest extends TestCase
 		assertEquals(false, result.pending);
 		assertEquals(null, result.tags);
 		assertEquals(null, result.description);
-		assertEquals(null, result.date);
+		assertEquals(null, result.timestamp);
 	}
 	
 	public void testDate()
@@ -45,7 +45,7 @@ public class GpsTracesParserTest extends TestCase
 		GpsTraceDetails result = parseOne(xml);
 		Calendar c = Calendar.getInstance(TimeZone.getTimeZone("UTC"), Locale.UK);
 		c.set(2006, Calendar.DECEMBER, 12, 15, 20, 32);
-		assertEquals(c.getTimeInMillis() / 1000, result.date.getTime() / 1000);
+		assertEquals(c.getTimeInMillis() / 1000, result.timestamp.getTime() / 1000);
 	}
 	
 	public void testParseVisibility() throws IOException

@@ -62,7 +62,7 @@ public class GpsTracesParser extends XmlParser implements ApiResponseReader<Void
 			
 			String timestamp = getAttribute("timestamp");
 			if(timestamp != null)
-			trace.date = dateFormat.parse(timestamp);
+			trace.timestamp = dateFormat.parse(timestamp);
 		}
 	}
 

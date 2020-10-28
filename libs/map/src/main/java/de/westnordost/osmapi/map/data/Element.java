@@ -1,6 +1,5 @@
 package de.westnordost.osmapi.map.data;
 
-import java.util.Date;
 import java.util.Map;
 
 import de.westnordost.osmapi.changesets.Changeset;
@@ -24,7 +23,7 @@ public interface Element
 
 	Changeset getChangeset();
 	
-	Date getDateEdited();
+	Long getTimestamp();
 
 	Map<String, String> getTags();
 

@@ -3,7 +3,6 @@ package de.westnordost.osmapi.traces;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import junit.framework.TestCase;
@@ -34,7 +33,7 @@ public class GpxTrackWriterTest extends TestCase
 		GpsTrackpoint point = new GpsTrackpoint(new OsmLatLon(1.234, 2.345));
 		point.elevation = 789.1f;
 		point.horizontalDilutionOfPrecision = 42.1f;
-		point.time = new Date();
+		point.time = System.currentTimeMillis();
 		point.isFirstPointInTrackSegment = false; // will be ignored and set to true
 		elements.add(point);
 		
@@ -97,12 +96,12 @@ public class GpxTrackWriterTest extends TestCase
 		}
 	}
 	
-	private void checkTimeEqual(Date e, Date a)
+	private void checkTimeEqual(Long e, Long a)
 	{
 		if(e != null)
-			assertEquals(e.getTime()/1000, a.getTime()/1000);
+			assertEquals(e/1000, a/1000);
 		else
-			assertEquals(null, a);
+			assertNull(a);
 	}
 	
 	private List<GpsTrackpoint> writeAndRead(Iterable<GpsTrackpoint> elements)

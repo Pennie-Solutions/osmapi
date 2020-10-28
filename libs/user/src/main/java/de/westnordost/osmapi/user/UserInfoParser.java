@@ -8,7 +8,7 @@ import java.util.List;
 
 import de.westnordost.osmapi.ApiResponseReader;
 import de.westnordost.osmapi.common.Handler;
-import de.westnordost.osmapi.common.OsmXmlDateFormat;
+import de.westnordost.osmapi.common.TimestampFormatter;
 import de.westnordost.osmapi.common.XmlParser;
 
 /** Parses information for users (API 0.6, since 2012).
@@ -21,16 +21,17 @@ public class UserInfoParser extends XmlParser implements ApiResponseReader<Void>
 	                            ROLES = "roles",
 	                            BLOCKS = "blocks";
 
-	private final OsmXmlDateFormat dateFormat = new OsmXmlDateFormat();
+	private final TimestampFormatter formatter;
 
 	private List<String> roles;
 
 	protected Handler<UserInfo> handler;
 	protected UserInfo user;
 
-	public UserInfoParser(Handler<UserInfo> handler)
+	public UserInfoParser(Handler<UserInfo> handler, TimestampFormatter timestampFormatter)
 	{
 		this.handler = handler;
+		this.formatter = timestampFormatter;
 	}
 
 	@Override
@@ -54,7 +55,7 @@ public class UserInfoParser extends XmlParser implements ApiResponseReader<Void>
 		if(USER.equals(name))
 		{
 			createUser(getLongAttribute("id"),getAttribute("display_name"));
-			user.createdDate = dateFormat.parse(getAttribute("account_created"));
+			user.createdTimestamp = formatter.parse(getAttribute("account_created"));
 		}
 		
 		if(USER.equals(parent))

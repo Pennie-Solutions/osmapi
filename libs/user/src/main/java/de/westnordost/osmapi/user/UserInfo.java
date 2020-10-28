@@ -1,7 +1,6 @@
 package de.westnordost.osmapi.user;
 
 import java.io.Serializable;
-import java.util.Date;
 import java.util.List;
 
 /** Non-private info of a user queried through the user-API */
@@ -14,7 +13,7 @@ public class UserInfo extends User implements Serializable
 		super(id, displayName);
 	}
 	
-	public Date createdDate;
+	public Long createdTimestamp;
 	
 	/** aka the number of edits */
 	public int changesetsCount;

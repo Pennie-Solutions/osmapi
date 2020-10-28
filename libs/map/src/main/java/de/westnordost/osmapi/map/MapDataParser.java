@@ -2,7 +2,6 @@ package de.westnordost.osmapi.map;
 
 import de.westnordost.osmapi.ApiResponseReader;
 import de.westnordost.osmapi.changesets.Changeset;
-import de.westnordost.osmapi.common.OsmXmlDateFormat;
 import de.westnordost.osmapi.common.XmlParser;
 import de.westnordost.osmapi.map.data.BoundingBox;
 import de.westnordost.osmapi.map.data.Element;
@@ -22,8 +21,6 @@ public class MapDataParser extends XmlParser implements ApiResponseReader<Void>
 	private static final String NODE = "node",
 	                            WAY = "way",
 	                            RELATION = "relation";
-
-	private final OsmXmlDateFormat dateFormat = new OsmXmlDateFormat();
 	
 	private MapDataHandler handler;
 	private MapDataFactory factory;
@@ -35,7 +32,7 @@ public class MapDataParser extends XmlParser implements ApiResponseReader<Void>
 	private long id = -1;
 	private int version = 0;
 	private Long changesetId;
-	private Date timestamp;
+	private String timestampString;
 
 	private Double lat;
 	private Double lon;
@@ -96,14 +93,14 @@ public class MapDataParser extends XmlParser implements ApiResponseReader<Void>
 		}
 		else if (name.equals(NODE) || name.equals(WAY) || name.equals(RELATION))
 		{
-			timestamp = parseDate();
+			timestampString = getAttribute("timestamp");
 			
 			changesetId = getLongAttribute("changeset");
 			if(changesetId != null && !changesets.containsKey(changesetId))
 			{
 				Changeset changeset = new Changeset();
 				changeset.id = changesetId;
-				changeset.date = timestamp;
+				changeset.date = timestampString;
 				changeset.user = parseUser();
 				
 				changesets.put( changesetId, changeset);
@@ -119,14 +116,6 @@ public class MapDataParser extends XmlParser implements ApiResponseReader<Void>
 				lon = getDoubleAttribute("lon");
 			}
 		}
-	}
-
-	private Date parseDate() throws ParseException
-	{
-		String timestamp = getAttribute("timestamp");
-		if(timestamp == null) return null;
-
-		return dateFormat.parse(timestamp);
 	}
 
 	private User parseUser()
@@ -151,19 +140,19 @@ public class MapDataParser extends XmlParser implements ApiResponseReader<Void>
 		if(name.equals(NODE))
 		{
 			handler.handle(
-					factory.createNode(id, version, lat, lon, tags, changesets.get(changesetId), timestamp));
+					factory.createNode(id, version, lat, lon, tags, changesets.get(changesetId), timestampString));
 		}
 		else if(name.equals(WAY))
 		{
 			handler.handle(
-					factory.createWay(id, version, nodes, tags,changesets.get(changesetId), timestamp));
+					factory.createWay(id, version, nodes, tags,changesets.get(changesetId), timestampString));
 			
 			nodes = new LinkedList<>();
 		}
 		else if(name.equals(RELATION))
 		{
 			handler.handle(
-					factory.createRelation(id, version, members, tags, changesets.get(changesetId), timestamp));
+					factory.createRelation(id, version, members, tags, changesets.get(changesetId), timestampString));
 			
 			members = new ArrayList<>();
 		}

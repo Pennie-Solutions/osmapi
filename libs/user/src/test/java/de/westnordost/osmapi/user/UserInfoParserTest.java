@@ -10,13 +10,17 @@ import java.util.TimeZone;
 import de.westnordost.osmapi.TestUtils;
 import de.westnordost.osmapi.common.Handler;
 import de.westnordost.osmapi.common.ListHandler;
+import de.westnordost.osmapi.common.OsmXmlDateFormat;
 import de.westnordost.osmapi.common.SingleElementHandler;
+import de.westnordost.osmapi.common.TimestampFormatter;
 
 public class UserInfoParserTest extends TestCase
 {
+	private final TimestampFormatter formatter = new OsmXmlDateFormat();
+
 	public void testNoInput() throws IOException
 	{
-		new UserInfoParser(new FailIfCalled()).parse(TestUtils.asInputStream(""));
+		new UserInfoParser(new FailIfCalled(), formatter).parse(TestUtils.asInputStream(""));
 	}
 
 	public void testAttributes()
@@ -31,7 +35,7 @@ public class UserInfoParserTest extends TestCase
 
 		Calendar c = Calendar.getInstance(TimeZone.getTimeZone("UTC"), Locale.UK);
 		c.set(2013, Calendar.JANUARY, 20, 17, 16, 23);
-		assertEquals(c.getTimeInMillis() / 1000, user.createdDate.getTime() / 1000);
+		assertEquals(c.getTimeInMillis() / 1000, user.createdTimestamp / 1000);
 	}
 	
 	public void testOptionalElements()
@@ -124,7 +128,7 @@ public class UserInfoParserTest extends TestCase
 				"<user id=\"1\" display_name=\"\" account_created=\"2015-01-20T17:16:23Z\"/>";
 
 		ListHandler<UserInfo> handler = new ListHandler<>();
-		new UserInfoParser(handler).parse(TestUtils.asInputStream(xml));
+		new UserInfoParser(handler, formatter).parse(TestUtils.asInputStream(xml));
 		assertEquals(2, handler.get().size());
 	}
 
@@ -133,7 +137,7 @@ public class UserInfoParserTest extends TestCase
 		try
 		{
 			SingleElementHandler<UserInfo> handler = new SingleElementHandler<>();
-			new UserInfoParser(handler).parse(TestUtils.asInputStream(xml));
+			new UserInfoParser(handler, formatter).parse(TestUtils.asInputStream(xml));
 			return handler.get();
 		}
 		catch(IOException e)

@@ -1,7 +1,6 @@
 package de.westnordost.osmapi.traces;
 
 import java.io.Serializable;
-import java.util.Date;
 import java.util.List;
 
 import de.westnordost.osmapi.map.data.LatLon;
@@ -29,7 +28,7 @@ public class GpsTraceDetails implements Serializable
 	public Visibility visibility;
 	/** whether the server did not complete the import of the trace yet */
 	public boolean pending;
-	public Date date;
+	public Long timestamp;
 	/** may be empty/null */
 	public String description;
 	/** may be empty/null */

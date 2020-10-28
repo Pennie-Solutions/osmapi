@@ -1,7 +1,6 @@
 package de.westnordost.osmapi.traces;
 
 import java.io.Serializable;
-import java.util.Date;
 
 import de.westnordost.osmapi.map.data.LatLon;
 
@@ -21,7 +20,7 @@ public class GpsTrackpoint implements Serializable
 	
 	/** null if unknown. The time is only specified in tracks uploaded with the visibility
 	 *  identifiable or trackable (see GpsTraceDetails) */
-	public Date time;
+	public Long time;
 	
 	public Float horizontalDilutionOfPrecision;
 	public Float elevation;

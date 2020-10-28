@@ -6,20 +6,20 @@ import java.util.Date;
 import java.util.TimeZone;
 
 /** Format used to represent dates within the OSM Api 0.6 (except notes)*/
-public class OsmXmlDateFormat
+public class OsmXmlDateFormat implements TimestampFormatter
 {
 	private static final SimpleDateFormat DEFAULT = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
 	static {
 		DEFAULT.setTimeZone(TimeZone.getTimeZone("UTC"));
 	}
 	
-	public Date parse(String source) throws ParseException
+	@Override public long parse(String source) throws ParseException
 	{
-		return DEFAULT.parse(source);
+		return DEFAULT.parse(source).getTime();
 	}
-	
-	public String format(Date date)
+
+	@Override public String format(long timestamp)
 	{
-		return DEFAULT.format(date);
+		return DEFAULT.format(new Date(timestamp));
 	}
 }

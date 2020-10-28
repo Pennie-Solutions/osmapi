@@ -6,7 +6,9 @@ import java.util.List;
 
 import de.westnordost.osmapi.OsmConnection;
 import de.westnordost.osmapi.common.ListHandler;
+import de.westnordost.osmapi.common.OsmXmlDateFormat;
 import de.westnordost.osmapi.common.SingleElementHandler;
+import de.westnordost.osmapi.common.TimestampFormatter;
 import de.westnordost.osmapi.common.errors.OsmNotFoundException;
 import de.westnordost.osmapi.common.errors.OsmAuthorizationException;
 
@@ -15,10 +17,18 @@ import de.westnordost.osmapi.common.errors.OsmAuthorizationException;
 public class UserDao
 {
 	private final OsmConnection osm;
+	private final TimestampFormatter formatter;
 
 	public UserDao(OsmConnection osm)
 	{
 		this.osm = osm;
+		this.formatter = new OsmXmlDateFormat();
+	}
+
+	public UserDao(OsmConnection osm, TimestampFormatter formatter)
+	{
+		this.osm = osm;
+		this.formatter = formatter;
 	}
 
 	/** @return the user info of the current user
@@ -27,7 +37,7 @@ public class UserDao
 	public UserDetails getMine()
 	{
 		SingleElementHandler<UserInfo> handler = new SingleElementHandler<>();
-		osm.makeAuthenticatedRequest("user/details", null, new UserDetailsParser(handler));
+		osm.makeAuthenticatedRequest("user/details", null, new UserDetailsParser(handler, formatter));
 		return (UserDetails) handler.get();
 	}
 
@@ -41,7 +51,7 @@ public class UserDao
 		try
 		{
 			SingleElementHandler<UserInfo> handler = new SingleElementHandler<>();
-			osm.makeAuthenticatedRequest("user/" + userId, null, new UserInfoParser(handler));
+			osm.makeAuthenticatedRequest("user/" + userId, null, new UserInfoParser(handler, formatter));
 			return handler.get();
 		}
 		catch(OsmNotFoundException e)
@@ -54,7 +64,7 @@ public class UserDao
 	{
 		if(userIds.isEmpty()) return Collections.emptyList();
 		ListHandler<UserInfo> handler = new ListHandler<>();
-		osm.makeAuthenticatedRequest("users?users=" + toCommaList(userIds), null, new UserInfoParser(handler));
+		osm.makeAuthenticatedRequest("users?users=" + toCommaList(userIds), null, new UserInfoParser(handler, formatter));
 		return handler.get();
 	}
 

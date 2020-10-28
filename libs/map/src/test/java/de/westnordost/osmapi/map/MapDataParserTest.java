@@ -52,7 +52,7 @@ public class MapDataParserTest extends TestCase
 
 		Calendar c = Calendar.getInstance(TimeZone.getTimeZone("UTC"), Locale.UK);
 		c.set(2008, Calendar.FEBRUARY, 9, 10, 59, 23);
-		assertEquals(c.getTimeInMillis() / 1000, node.getDateEdited().getTime() / 1000);
+		assertEquals(c.getTimeInMillis() / 1000, node.getTimestamp() / 1000);
 		assertEquals(c.getTimeInMillis() / 1000, node.getChangeset().date.getTime() / 1000);
 
 		assertNotNull(node.getChangeset().user);
@@ -81,7 +81,7 @@ public class MapDataParserTest extends TestCase
 
 		Calendar c = Calendar.getInstance(TimeZone.getTimeZone("UTC"), Locale.UK);
 		c.set(2008, Calendar.FEBRUARY, 9, 10, 59, 2);
-		assertEquals(c.getTimeInMillis() / 1000, way.getDateEdited().getTime() / 1000);
+		assertEquals(c.getTimeInMillis() / 1000, way.getTimestamp() / 1000);
 		assertEquals(c.getTimeInMillis() / 1000, way.getChangeset().date.getTime() / 1000);
 
 		assertNotNull(way.getChangeset().user);
@@ -113,7 +113,7 @@ public class MapDataParserTest extends TestCase
 
 		Calendar c = Calendar.getInstance(TimeZone.getTimeZone("UTC"), Locale.UK);
 		c.set(2013, Calendar.SEPTEMBER, 8, 19, 26, 52);
-		assertEquals(c.getTimeInMillis() / 1000, relation.getDateEdited().getTime() / 1000);
+		assertEquals(c.getTimeInMillis() / 1000, relation.getTimestamp() / 1000);
 		assertEquals(c.getTimeInMillis() / 1000, relation.getChangeset().date.getTime() / 1000);
 
 		assertNotNull(relation.getChangeset().user);

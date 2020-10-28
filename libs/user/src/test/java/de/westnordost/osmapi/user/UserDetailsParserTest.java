@@ -4,12 +4,16 @@ import java.io.IOException;
 import java.util.List;
 
 import de.westnordost.osmapi.TestUtils;
+import de.westnordost.osmapi.common.OsmXmlDateFormat;
 import de.westnordost.osmapi.common.SingleElementHandler;
+import de.westnordost.osmapi.common.TimestampFormatter;
 
 import junit.framework.TestCase;
 
 public class UserDetailsParserTest extends TestCase
 {
+	private final TimestampFormatter formatter = new OsmXmlDateFormat();
+
 	public void testOptionalElements()
 	{
 		String xml =
@@ -89,7 +93,7 @@ public class UserDetailsParserTest extends TestCase
 		try
 		{
 			SingleElementHandler<UserInfo> handler = new SingleElementHandler<>();
-			new UserDetailsParser(handler).parse(TestUtils.asInputStream(xml));
+			new UserDetailsParser(handler, formatter).parse(TestUtils.asInputStream(xml));
 			return (UserDetails) handler.get();
 		}
 		catch(IOException e)

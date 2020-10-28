@@ -4,6 +4,7 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.westnordost.osmapi.common.TimestampFormatter;
 import de.westnordost.osmapi.common.Handler;
 import de.westnordost.osmapi.map.data.OsmLatLon;
 
@@ -17,9 +18,9 @@ public class UserDetailsParser extends UserInfoParser
 	
 	private UserDetails userDetails;
 
-	public UserDetailsParser(Handler<UserInfo> handler)
+	public UserDetailsParser(Handler<UserInfo> handler, TimestampFormatter timestampFormatter)
 	{
-		super(handler);
+		super(handler, timestampFormatter);
 	}
 
 	@Override
